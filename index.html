@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <title>Spotify Clone</title>
+    <style>
+        * {box-sizing: border-box}
+        body {
+            margin: 0px;
+            height: 100vh;
+            font-family: "Open Sans";
+            color: white;
+            overflow-x: hidden;
+        }
+        .outerContainer {
+            display: flex;
+            justify-content: center;
+            background-color: #000;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #2e2e2e;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #3a3a3a;
+        }
+        .container {
+            width: calc(100vw - 20px);
+            height: calc(90vh - 20px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .left {
+            width: calc(25vw - 20px);
+            height: calc(90vh - 20px);
+            display: flex;
+            flex-direction: column;
+        }
+        .homeAndSearch {
+            background-color: #191919;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+        .yourLibrary {
+            background-color: #191919;
+            flex: 1;
+            border-radius: 10px;
+            overflow-y: auto;
+        }
+        .right {
+            width: calc(50vw - 10px);
+            height: calc(90vh - 20px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #191919;
+            border-radius: 10px;
+        }
+        .rightest {
+            width: calc(25vw - 10px);
+            height: calc(90vh - 20px);
+            overflow-y: auto;
+            background-color: #0d0d0d;
+            border-radius: 10px;
+            overflow-x: hidden;
+        }
+        .homeAndSearchComponent {
+            padding: 15px;
+            color: #aaa;
+            font-weight: bold;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .homeAndSearchComponent:hover {
+            color: white;
+        }
+        .homeAndSearchComponent i {
+            font-size: 1.3em;
+            margin-left: 8px;
+        }
+        .someRandomFlex {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+        .libraryIcon {
+            font-size: 1.2em;
+            color: #aaa;
+            /* background-color: #333; */
+            padding: 4px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .libraryIcon:hover {
+            background-color: #333;
+        }
+        .playlistsAndArtists {
+            background-color: #353535;
+            padding: 9px 12px;
+            font-size: 0.9em;
+            margin-top: 6px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .playlistsAndArtists:hover {
+            background-color: #444;
+        }
+        .playlist {
+            display: flex;
+            width: auto;
+            padding: 12px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .playlist:hover {
+            background-color: #333;
+        }
+        .playlist img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            align-items: center;
+        }
+        .playlist p {
+            margin: 0px;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+        .playlist div {
+            margin-left: 10px;
+        }
+        .playlist .libraryDesc {
+            color: #cacaca;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .circle {
+            padding: 2px;
+            font-size: 1px;
+            background-color: white;
+            vertical-align: middle;
+            border-radius: 50px;
+        }
+        .controls {
+            height: calc(10vh + 10px);
+            width: 100vw;
+            background-color: black;
+            display: flex;
+            justify-content: space-between;
+        }
+        .controlsSong {
+            align-self: flex-start;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        .controlsTiming {
+            align-self: center;
+            flex: 1;
+            height: 50px;
+        }
+        .controlsOptions {
+            align-self: center;
+            flex: 1;
+            font-size: 1.1em;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 10px;
+            align-items: center;
+        }
+        .controlsOptions i {
+            margin-left: 13px;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .controlsOptions i:hover {
+            color: white;
+            transform: scale(1.1, 1.1);
+        }
+        .timingContainer {
+            display: flex;
+            flex-direction: column;
+            width: 50vw;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        .timingControls {
+            display: flex;
+            gap: 1.5vw;
+            font-size: 1.2em;
+            color: #bbb;
+            align-items: center;
+            margin-bottom: 0.4vh;
+        }
+        .timingControls i {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .timingControls i:hover {
+            color: white;
+        }
+        .playButton:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .timingLine {
+            width: 35vw;
+            height: 3px;
+            background-color: #555;
+            border-radius: 50px;
+            display: flex;
+        }
+        .timingDoneLine {
+            width: 12vw;
+            height: 3px;
+            background-color: #16e16e;
+            border-radius: 50px;
+        }
+        .timingCircle {
+            width: 12px;
+            height: 12px;
+            margin-left: -4px;
+            margin-top: -4px;
+            background-color: white;
+            border-radius: 50px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 10px;
+        }
+        .backAndForth {display: flex;}
+        .back {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 22px;
+            background-color: #111;
+            border-radius: 50px;
+        }
+        .navButtons {
+            display: flex;
+            gap: 0.6vw;
+        }
+        .navBtn {
+            background-color: white;
+            color: black;
+            padding: 8px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .navBtn:hover {
+            transform: scale(1.05, 1.05);
+        }
+        .right * {
+            position: relative;
+            z-index: 2;
+        }
+        .purpleBackground {
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(50vw - 10px);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background-image: linear-gradient(rgb(46, 0, 96), #191919);
+            height: 50vh;
+        }
+        .topPlaylists {
+            display: flex;
+            margin: 10px 10px 0px 10px;
+            gap: 0.5vw;
+            align-items: center;
+        }
+        .oneOfTheTopPlaylists {
+            display: flex;
+            background-color: rgba(100, 100, 100, 0.2);
+            width: 50%;
+            flex-wrap: wrap;
+            align-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .oneOfTheTopPlaylists:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .oneOfTheTopPlaylists img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-top-left-radius: 5px;
+        }
+        .oneOfTheTopPlaylists p {
+            margin: 0px;
+            margin-left: 12px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        .right h2 {
+            margin: 0;
+            margin-left: 12px;
+        }
+        .playlistsGrid {
+            display: flex;
+            gap: 1vw;
+            justify-content: space-around;
+            margin: 8px 1vw 30px 1vw;
+        }
+        .playlistsGridComponent {
+            display: flex;
+            flex-direction: column;
+            padding: 11px 8px;
+            align-items: center;
+            flex: 1;
+            /* background-color: #242424; */
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .playlistsGridComponent:hover {
+            background-color: #242424;
+        }
+        .playlistsGrid img {
+            width: 8vw;
+            height: 8vw;
+            border-radius: 6px;
+        }
+        .playlistsGrid p.firstP {
+            margin: 0px;
+            margin-top: 12px;
+            width: calc(100% - 0.6vw);
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .playlistsGrid p.secondP {
+            color: #ccc;
+            font-size: 0.8em;
+            margin: 0px;
+            margin-top: 5px;
+            width: calc(100% - 0.6vw);
+        }
+        .headingAndClose {
+            display: flex;
+            justify-content: space-between;
+            padding: 1vw;
+            padding-top: 3vh;
+            align-items: center;
+        }
+        .headingAndClose p {
+            margin: 0px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .nowPlayingCover {
+            border-radius: 6px;
+            width: calc(23vw - 10px);
+            height: calc(23vw - 10px);
+            margin: 0 1vw;
+        }
+        .rightestSongTitle {
+            font-size: 1.4em;
+            margin: 8px 1vw 0px 1vw;
+        }
+        .headingAndClose p.rightestSongComposer {
+            color: #999;
+            font-weight: bold;
+            margin: 4px 1vw 0 1vw;
+        }
+        .aboutArtist {
+            position: relative;
+            margin: 1vw;
+            cursor: pointer;
+        }
+        .aboutArtist img {
+            width: calc(28vw - 10px);
+            height: calc(14vw - 10px);
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .aboutArtist .card {
+            width: calc(23vw - 10px);
+            background-color: #232323;
+            padding: 1vw;
+            margin-top: -10px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .aboutArtist .card .firstFlex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .aboutArtist .card .firstFlex p {
+            color: #999;
+            margin: 0px;
+            font-weight: 600;
+        }
+        .aboutArtist .card .aboutTheArtistText {
+            color: #888;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin: 0px;
+            margin-top: 1.5vh;
+        }
+        .composersName {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 0;
+            margin-top: 1.2vh;
+            margin-bottom: 0.5vh;
+        }
+        .followArtist {
+            border: 1px solid white;
+            border-radius: 50px;
+            background-color: transparent;
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: white;
+            padding: 8px 12px;
+            transition: 0.2s;
+        }
+        .followArtist:hover {
+            background-color: white;
+            color: black;
+            transform: scale(1.1, 1.1);
+        }
+        .singleTour {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7vw;
+            /* background-color: #444; */
+            margin-top: 0.5vh;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .singleTour:hover {
+            background-color: #444;
+            border-radius: 7px;
+        }
+        .tourdate {
+            padding: 5px 14px;
+            background-color: #111;
+            border-radius: 7px;
+        }
+        .tourdate p {
+            margin: 0;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        .tourdate p.month {
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .tourinfo {
+            flex: 1;
+        }
+        .tourinfo p {
+            margin: 0;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-left: 0.8vw;
+        }
+        .tourinfo p.theSecondP {
+            font-size: 0.8em;
+        }
+        .tourinfo p.theThirdP {
+            color: #ccc;
+        }
+        .secondFlex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .secondFlex .composersName {
+            font-weight: bold;
+            font-size: 0.9em;
+            margin: 0px;
+        }
+        .secondFlex .composersName2 {
+            font-weight: bold;
+            color: #bbb;
+            font-size: 0.8em;
+            margin: 0px;
+            cursor: pointer;
+        }
+        .secondFlex .composersName2:hover {
+            text-decoration: underline;
+        }
+        .queueSong {
+            display: flex;
+            align-items: center;
+            margin-top: 1vh;
+            /* background-color: #333; */
+            padding: 8px 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 7px;
+        }
+        .queueSong:hover {
+            background-color: #333;
+        }
+        .queueSong i {
+            margin: 0.7vw;
+        }
+        .queueSong img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+        .queueSongName {
+            font-weight: bold;
+            font-size: 0.92em;
+            margin: 0px;
+            margin-left: 0.5vw;
+        }
+        .queueComposerName {
+            color: #ccc;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 0;
+            margin-left: 0.5vw;
+            margin-top: 0.3vh;
+        }
+        .searchButton {
+            padding: 8px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .searchButton:hover {
+            background-color: #333;
+        }
+        .recentsButton {
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .recentsButton:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .backButton {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .backButton:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .fakeFirstOne {
+            background-color: #fff !important;
+            color: black;
+        }
+        .fakeOnes {
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .fakeOnes:hover {
+            background-color: #fff;
+            color: black;
+        }
+        .likeAndMore i {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .likeAndMore i:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .lyricsPage {
+            background-color: #b4611a;
+        }
+        .lyrics {
+            padding: 1vw 2.5vw;
+        }
+        .lyric {
+            color: black;
+            font-size: 1.8em;
+            font-weight: bold;
+            line-height: 1.6;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .lyric:hover {
+            color: white;
+        }
+        .greenButton {
+            color: #16e16e !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="outerContainer">
+    <div class="container">
+        <div class="left">
+            <div class="homeAndSearch">
+                <div class="homeAndSearchComponent" style="color:white;"><i class="fa fa-home"></i>&nbsp;&nbsp;&nbsp; Home</div>
+                <div class="homeAndSearchComponent" style="padding-top: 8px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp; Search</div>
+            </div>
+            <div class="yourLibrary">
+                <div class="someRandomFlex">
+                    <div class="homeAndSearchComponent" style="flex:1;padding:5px 0px 5px 15px;"><i class="fa fa-swatchbook"></i>&nbsp;&nbsp;&nbsp; Your Library</div>
+                    <div style="padding: 15px;">
+                        <i class="fa fa-plus libraryIcon" style="margin-right: 15px;"></i>
+                        <i class="fa fa-arrow-right libraryIcon"></i>
+                    </div>
+                </div>
+                <div class="someRandomFlex" style="margin-left: 15px; width: auto;">
+                    <div class="playlistsAndArtists" style="margin-right: 10px;">Playlists</div>
+                    <div class="playlistsAndArtists">Artists</div>
+                </div>
+                <div class="someRandomFlex" style="justify-content: space-between; padding: 0 20px; width: auto; margin-top: 20px;">
+                    <i class="fa fa-search searchButton"></i>
+                    <span style="font-size: 0.9em; font-weight: bold;" class="recentsButton">Recents &nbsp;<i class="fa fa-list"></i></span>
+                </div>
+                <div class="playlist" style="margin-top: 8px;">
+                    <img src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Liked Songs</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;1000 Songs</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+                <div class="playlist">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <div>
+                        <p class="libraryTitle"><b>Raddi</b></p>
+                        <p class="libraryDesc">Playlist&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Shyamak Seth</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right" style="position: relative;" id="mainScreen">
+            <div class="purpleBackground"></div>
+            <div class="navbar">
+                <div class="backAndForth">
+                    <div class="backButton back" style="margin-right: 5px;"><i class="fas fa-angle-left"></i></div>
+                    <div class="back" style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-angle-right"></i></div>
+                </div>
+                <div class="navButtons">
+                    <div class="navBtn">Explore Premium</div>
+                    <div class="navBtn" style="background-color: rgba(0, 0, 0, 0.7); color: white;">
+                        <i class="fas fa-users" style="font-size: 1.3em; vertical-align: middle;"></i>
+                    </div>
+                    <div class="navBtn" style="background-color: red; color: white; padding: 8px 14px;">S</div>
+                </div>
+            </div>
+            <span class="playlistsAndArtists fakeOnes fakeFirstOne" style="margin-left: 15px;">All</span>
+            <span class="playlistsAndArtists fakeOnes">Music</span>
+            <span class="playlistsAndArtists fakeOnes">Podcasts</span>
+            <h2 style="margin-top: 5vh; margin-bottom: 5px;">Good Evening, TS</h2>
+            <div class="topPlaylists">
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg">
+                    <p>Liked Songs</p>
+                </div>
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+            </div>
+            <div class="topPlaylists">
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+            </div>
+            <div class="topPlaylists">
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+            </div>
+            <div class="topPlaylists" style="margin-bottom: 20px;">
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+                <div class="oneOfTheTopPlaylists">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p>Not Pro Playlist</p>
+                </div>
+            </div>
+            <h2>Made For You</h2>
+            <div class="playlistsGrid">
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 1</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 3</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 4</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+            </div>
+            <h2>Today's Biggest Hits</h2>
+            <div class="playlistsGrid">
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 1</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+            </div>
+            <h2>Today's Biggest Hits</h2>
+            <div class="playlistsGrid">
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 1</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+            </div>
+            <h2>Recently Played</h2>
+            <div class="playlistsGrid">
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 1</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+            </div>
+            <h2>Your Top Mixes</h2>
+            <div class="playlistsGrid">
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 1</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+                <div class="playlistsGridComponent">
+                    <img src="https://www.udiscovermusic.com/wp-content/uploads/2022/03/janelle-monae-dirty-computer.jpg">
+                    <p class="firstP">Daily Mix 2</p>
+                    <p class="secondP">Drake, Travis Scott, Cardi B...</p>
+                </div>
+            </div>
+        </div>
+        <div class="right lyricsPage" id="lyricsPage" style="display: none;">
+            <div class="navbar">
+                <div class="backAndForth">
+                    <div class="backButton back" style="margin-right: 5px;"><i class="fas fa-angle-left"></i></div>
+                    <div class="back" style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-angle-right"></i></div>
+                </div>
+                <div class="navButtons">
+                    <div class="navBtn">Explore Premium</div>
+                    <div class="navBtn" style="background-color: rgba(0, 0, 0, 0.7); color: white;">
+                        <i class="fas fa-users" style="font-size: 1.3em; vertical-align: middle;"></i>
+                    </div>
+                    <div class="navBtn" style="background-color: red; color: white; padding: 8px 14px;">S</div>
+                </div>
+            </div>
+            <div class="lyrics">
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+                <div class="lyric">These are some random test lyrics</div>
+            </div>
+        </div>
+        <div class="rightest">
+            <div class="headingAndClose">
+                <p>My Love Mine All Mine</p>
+                <i class="fas fa-times" style="cursor: pointer;"></i>
+            </div>
+            <img src="https://i1.sndcdn.com/artworks-5NLon0cRDARq-0-t500x500.jpg" class="nowPlayingCover">
+            <div class="headingAndClose" style="padding: 0px">
+                <div>
+                    <h1 class="rightestSongTitle">My Love Mine All Mine</h1>
+                    <p class="rightestSongComposer">Mitski</p>
+                </div>
+                <div class="likeAndMore">
+                    <i class="fas fa-heart" style="color: #16e16e; margin-right: 1vw;"></i>
+                    <i class="fas fa-ellipsis-h" style="margin-right: 1vw;"></i>
+                </div>
+            </div>
+            <div class="aboutArtist">
+                <img src="https://images.squarespace-cdn.com/content/v1/5b788d28697a98e17a6d4c7a/6ca3315d-2983-42ef-81b1-85f1782089fb/Screenshot+2023-09-22+175233.png">
+                <div class="card">
+                    <p class="composersName">Mitski</p>
+                    <div class="firstFlex">
+                        <p>38,000,000 Monthly Listeners</p>
+                        <button class="followArtist">Follow</button>
+                    </div>
+                    <p class="aboutTheArtistText">This is some random ass text that I have no idea why I'm writing. I know nothing about Mitski and I'm not gonna pretend to. Hi YBot! Three dots for effect...</p>
+                </div>
+            </div>
+            <div class="aboutArtist" style="margin-top: 5vh;">
+                <div class="card" style="border-radius: 7px;">
+                    <div class="secondFlex">
+                        <p class="composersName">On Tour</p>
+                        <p class="composersName2">Show All</p>
+                    </div>
+                    <div class="singleTour">
+                        <div class="tourdate">
+                            <p class="month">Mar</p>
+                            <p class="date">21</p>
+                        </div>
+                        <div class="tourinfo">
+                            <p class="theFirstP">Chicago</p>
+                            <p class="theSecondP">Mitski with Amogh Agrawal</p>
+                            <p class="theThirdP">Thu 8:00 PM&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Auditorium Theatre</p>
+                        </div>
+                    </div>
+                    <div class="singleTour">
+                        <div class="tourdate">
+                            <p class="month">Mar</p>
+                            <p class="date">22</p>
+                        </div>
+                        <div class="tourinfo">
+                            <p class="theFirstP">Chicago</p>
+                            <p class="theSecondP">Mitski with Aayush Garg</p>
+                            <p class="theThirdP">Thu 8:00 PM&nbsp;&nbsp;<span class="circle"></span>&nbsp;&nbsp;Auditorium Theatre</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aboutArtist" style="margin-top: 5vh;">
+                <div class="card" style="border-radius: 7px;">
+                    <div class="secondFlex">
+                        <p class="composersName">Next In Queue</p>
+                        <p class="composersName2">Open Queue</p>
+                    </div>
+                    <div class="queueSong">
+                        <i class="fas fa-music"></i>
+                        <img src="https://i.scdn.co/image/ab67616d0000b273530fa3c87225dc153c064691">
+                        <div class="queueDetails">
+                            <p class="queueSongName">Black Friday</p>
+                            <p class="queueComposerName">Tom Odell</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="controls">
+        <div class="controlsSong">
+            <div class="playlist" style="cursor: default; background-color: transparent;">
+                <img src="https://i1.sndcdn.com/artworks-5NLon0cRDARq-0-t500x500.jpg" style="height: 8vh; width: 8vh; border-radius: 2px;">
+                <div style="margin-left: 15px;">
+                    <p class="libraryTitle" style="font-size: 14px; margin-top: 1.3vh; font-weight: 600;">My Love Mine All Mine</p>
+                    <p class="libraryDesc" style="font-size: 12px; margin-top: 0.3vh; font-weight: normal;">Mitski</p>
+                </div>
+                <div style="display: flex; align-items: center; margin-left: 1vw;">
+                    <i class="far fa-heart" style="color: #fff; cursor: pointer;" onmouseover="hoverOverLike(event)" onmouseout="hoverOutOfLike(event)"></i>
+                </div>
+            </div>
+        </div>
+        <div class="controlsTiming">
+            <div class="timingContainer">
+                <div class="timingControls">
+                    <i class="fa fa-random"></i>
+                    <i class="fa fa-fast-backward"></i>
+                    <i class="fa fa-play-circle playButton" style="color: white; font-size: 1.6em;"></i>
+                    <i class="fa fa-fast-forward"></i>
+                    <i class="fa fa-retweet"></i>
+                </div>
+                <div style="display: flex; align-items: center; gap: 3px;">
+                    <span style="color: #aaa; font-size: 0.8em;">1:10</span>
+                    <div class="timingLine">
+                        <div class="timingDoneLine"></div>
+                        <div class="timingCircle"></div>
+                    </div>
+                    <span style="color: #aaa; font-size: 0.8em;">3:00</span>
+                </div>
+            </div>
+        </div>
+        <div class="controlsOptions">
+            <i class="far fa-play-circle" style="color: #16e16e"></i>
+            <i class="fas fa-pen-nib" onclick="toggleLyrics(event)"></i>
+            <i class="fas fa-clone"></i>
+            <i class="fas fa-tv"></i>
+            <i class="fas fa-volume-up"></i>
+            <div class="timingLine" style="width: 6vw; margin-left: 8px;">
+                <div class="timingDoneLine" style="width: 6vw;"></div>
+                <div class="timingCircle"></div>
+            </div>
+            <i class="far fa-window-restore"></i>
+            <i class="fas fa-expand-alt"></i>
+        </div>
+    </div>
+    <script>
+        function hoverOverLike(e) {
+            const likeButton = e.target
+            likeButton.classList.remove('far')
+            likeButton.classList.add('fas')
+            likeButton.style.color = '#16e16e'
+        }
+        function hoverOutOfLike(e) {
+            const likeButton = e.target
+            likeButton.classList.add('far')
+            likeButton.classList.remove('fas')
+            likeButton.style.color = '#fff'
+        }
+        function toggleLyrics(e) {
+            const lyricsButton = e.target
+            if (lyricsButton.classList.contains('greenButton')) {
+                document.getElementById('mainScreen').style.display = 'block'
+                document.getElementById('lyricsPage').style.display = 'none'
+                lyricsButton.classList.remove('greenButton')
+            } else {
+                document.getElementById('mainScreen').style.display = 'none'
+                document.getElementById('lyricsPage').style.display = 'block'
+                lyricsButton.classList.add('greenButton')
+            }
+        }
+    </script>
+</body>
+</html>
